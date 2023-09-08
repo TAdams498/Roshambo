@@ -4,4 +4,5 @@ interface IPlayer
     int Score { get; }
     MoveChoice MoveChoice { get; set; }
     void EstablishMoveChoice();
+    void RecordMoveChoice(MoveChoice choice);
 }

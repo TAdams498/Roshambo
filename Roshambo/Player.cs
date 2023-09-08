@@ -1,8 +1,8 @@
 ﻿class Player : IPlayer
 {
-    protected string[] _pastChoices = default;  //  protected access modifier allows ComputerPlayer class to also access this 
     public int Score { get; set; }
     public MoveChoice MoveChoice { get; set; }
+    public List<MoveChoice> PastChoices { get; }
 
     //  EstablishMoveChoice
     //  This method prompts the player for which item to choose
@@ -19,6 +19,16 @@
             "paper" => MoveChoice.Paper,
             _ => MoveChoice.Scissors
         };
+        RecordMoveChoice(MoveChoice);
+    }
+
+    //  RecordMoveChoice
+    //  This method is to record the move choice into the PastChoices list
+    //  Input:  choice  The decision made by the player for this round
+    //  Output: none
+    public void RecordMoveChoice(MoveChoice choice)
+    {
+        PastChoices.Add(choice);
     }
 }
 

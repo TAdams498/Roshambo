@@ -14,6 +14,7 @@
             1 => MoveChoice.Paper,
             _ => MoveChoice.Scissors
         };
+        RecordMoveChoice(MoveChoice);
     }
 }
 
