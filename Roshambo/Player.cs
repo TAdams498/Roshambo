@@ -1,8 +1,14 @@
 ﻿class Player : IPlayer
 {
+    public string ID { get; set; }
     public int Score { get; set; }
     public MoveChoice MoveChoice { get; set; }
     public List<MoveChoice> PastChoices { get; }
+    public Player()
+    {
+        ID = "Player";
+        PastChoices = new List<MoveChoice>();
+    }
 
     //  EstablishMoveChoice
     //  This method prompts the player for which item to choose
@@ -10,15 +16,28 @@
     //  Output: none
     public virtual void EstablishMoveChoice()
     {
-        string typedPlayerChoice = "";
-        Console.Write("Rock, Paper, or Scissors: ");
-        typedPlayerChoice = Console.ReadLine();
-        MoveChoice = typedPlayerChoice.ToLower() switch
+        while (true)
         {
-            "rock" => MoveChoice.Rock,
-            "paper" => MoveChoice.Paper,
-            _ => MoveChoice.Scissors
-        };
+            try
+            {
+                string typedPlayerChoice = "";
+                Console.Write("Rock, Paper, or Scissors: ");
+                typedPlayerChoice = Console.ReadLine();
+                MoveChoice = typedPlayerChoice.ToLower() switch
+                {
+                    "rock" => MoveChoice.Rock,
+                    "paper" => MoveChoice.Paper,
+                    "scissors" => MoveChoice.Scissors,
+                    _ => throw new Exception("Player selected invalid option.")
+                };
+                break;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Invalid choice.");
+                continue;
+            }
+        }
         RecordMoveChoice(MoveChoice);
     }
 
@@ -34,8 +53,7 @@
 
 
 /*
- * Error handling/Input validation
- * Array to hold past decisions (record how game played out, like chess)
+ * 
  */
 
 /*QUESTION

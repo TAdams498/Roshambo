@@ -1,6 +1,10 @@
 ﻿sealed class ComputerPlayer : Player, IPlayer
 {
     Random _random = new Random();
+    public ComputerPlayer()
+    {
+        ID = "ComputerPlayer";
+    }
 
     //  EstablishMoveChoice
     //  This method makes the computer choose an item
@@ -20,5 +24,5 @@
 
 
 /*
- * Array to hold past decisions (record how game played out, like chess) (maybe inherited)
+ * 
  */

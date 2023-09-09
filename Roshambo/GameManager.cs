@@ -2,8 +2,10 @@
 {
     private Player _player;
     private ComputerPlayer _computerPlayer;
-    private int _totalRounds;
-    private int _pointsToWin;
+    private uint _totalRounds;
+    private uint _pointsToWin;
+    private Player _winner;
+    private string[] _gameRecording;
 
     public bool GameOver { get; set; }
 
@@ -23,9 +25,33 @@
         string typedBestOfChoice = "";
         do
         {
-            Console.Write("Best of (must be an odd number): ");
-            typedBestOfChoice = Console.ReadLine();
-            _totalRounds = Convert.ToInt32(typedBestOfChoice);
+            while(true)
+            {
+                try
+                {
+                    Console.Write("Best of (must be an odd number): ");
+                    typedBestOfChoice = Console.ReadLine();
+                    _totalRounds = Convert.ToUInt32(typedBestOfChoice);
+                    break;
+                }
+                catch (OverflowException)
+                {
+                    if (typedBestOfChoice.Contains("-"))
+                    {
+                        Console.WriteLine("Must be a positive number.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Number too large.");
+                    }
+                    continue;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Must be a number.");
+                    continue;
+                }
+            }    
         }
         //  Input validation to ensure given number is odd
         while (_totalRounds % 2 == 0);
@@ -102,12 +128,43 @@
     {
         if ((_player.Score >= _pointsToWin) || (_computerPlayer.Score >= _pointsToWin))
         {
+            if (_player.Score >= _pointsToWin)
+            {
+                Console.WriteLine("You've won the game!");
+                _winner = _player;
+            }
+            else
+            {
+                Console.WriteLine("You've lost the game!");
+                _winner = _computerPlayer;
+            }
             GameOver = true;
+            RecordGame();
         }
+    }
+
+    //  RecordGame
+    //  This method records the decisions of each round in a game
+    //  Input:  none
+    //  Output: none
+    public void RecordGame()
+    {
+        //  set array length to match number of rounds played+1 to accommodate for line stating winner
+        _gameRecording = new string[_winner.PastChoices.Count+1];
+        _gameRecording[0] = "Winner is " + _winner.ID;
+        //  populate array with lines of text to place into output file
+        for (int i = 0;  i < _winner.PastChoices.Count; i++)
+        {
+            _gameRecording[i+1] = "P:" + _player.PastChoices[i].ToString() + " C:" + _computerPlayer.PastChoices[i].ToString();
+        }
+        //  set filename
+        string fileName = "gameResults_" + DateTime.Now.ToString("ssmmHHddMMyyyy");
+        //  write to file
+        File.WriteAllLines("..\\..\\..\\gameResults\\" + fileName + ".txt", _gameRecording);
     }
 }
 
 
 /*
- * Error handling/Input validation
+ * 
  */

@@ -42,7 +42,5 @@ public enum MoveChoice { Rock, Paper, Scissors };
  * -Game manager
  * 
  * Todo:
- * -Error handling/Input validation
- * -Array to hold past decisions (record how game played out, like chess)
- * -Final winner acknowledgement
+ * -
  */
