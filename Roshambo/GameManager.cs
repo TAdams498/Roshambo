@@ -23,38 +23,38 @@
     public void EstablishTotalRounds()
     {
         string typedBestOfChoice = "";
-        do
+        while(true)
         {
-            while(true)
+            try
             {
-                try
+                Console.Write("Best of (must be an odd number): ");
+                typedBestOfChoice = Console.ReadLine();
+                _totalRounds = Convert.ToUInt32(typedBestOfChoice);
+                if (_totalRounds % 2 == 0)
                 {
-                    Console.Write("Best of (must be an odd number): ");
-                    typedBestOfChoice = Console.ReadLine();
-                    _totalRounds = Convert.ToUInt32(typedBestOfChoice);
-                    break;
-                }
-                catch (OverflowException)
-                {
-                    if (typedBestOfChoice.Contains("-"))
-                    {
-                        Console.WriteLine("Must be a positive number.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Number too large.");
-                    }
+                    Console.WriteLine("Must be an odd number.");
                     continue;
                 }
-                catch (Exception)
+                break;
+            }
+            catch (OverflowException)
+            {
+                if (typedBestOfChoice.Contains("-"))
                 {
-                    Console.WriteLine("Must be a number.");
-                    continue;
+                    Console.WriteLine("Must be a positive number.");
                 }
-            }    
-        }
-        //  Input validation to ensure given number is odd
-        while (_totalRounds % 2 == 0);
+                else
+                {
+                    Console.WriteLine("Number too large.");
+                }
+                continue;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Must be a number.");
+                continue;
+            }
+        }    
         //  Integer division to make rounds needed to win one more than half of total possible rounds
         _pointsToWin = (_totalRounds / 2) + 1;
     }
