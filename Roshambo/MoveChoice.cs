@@ -1,0 +1,1 @@
+﻿public enum MoveChoice { Rock, Paper, Scissors };

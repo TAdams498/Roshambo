@@ -5,7 +5,7 @@
     private uint _totalRounds;
     private uint _pointsToWin;
     private Player _winner;
-    private string[] _gameRecording;
+    private List<string> _gameRecording;
 
     public bool GameOver { get; set; }
 
@@ -13,7 +13,26 @@
     {
         _player = player;
         _computerPlayer = computerPlayer;
+        _gameRecording = new List<string>();
         GameOver = false;
+    }
+
+    //  HandleMoveRecording
+    //  This method is [mostly to practice events and delegates, but actually] to record when moves happen
+    //  Input:  none
+    //  Output: none
+    public void HandleMoveRecording(Player targetedPlayer)
+    {
+        _gameRecording.Add(targetedPlayer.ID + " has chosen " + targetedPlayer.MoveChoice.ToString());
+    }
+
+    //  HandleScoreRecording
+    //  This method is [mostly to practice events and delegates, but actually] to record when score changes happen
+    //  Input:  none
+    //  Output: none
+    public void HandleScoreRecording(Player targetedPlayer)
+    {
+        _gameRecording.Add(targetedPlayer.ID + "'s score is now " + targetedPlayer.Score);
     }
 
     //  EstablishTotalRounds
@@ -54,9 +73,12 @@
                 Console.WriteLine("Must be a number.");
                 continue;
             }
-        }    
+        }
         //  Integer division to make rounds needed to win one more than half of total possible rounds
+        _gameRecording.Add("Game set to best of " + _totalRounds);
         _pointsToWin = (_totalRounds / 2) + 1;
+        _gameRecording.Add("Points needed to win: " + _pointsToWin);
+        Console.WriteLine("Points needed to win: " + _pointsToWin);
     }
 
     //  DetermineRoundWinner
@@ -65,7 +87,12 @@
     //  Output: none
     public void DetermineRoundWinner()
     {
+        Player winner = default;
         string feedback = "";
+        string currentScore = "";
+        //  Output about move selections
+        Console.WriteLine(_player + " chose " + _player.MoveChoice.ToString());
+        Console.WriteLine(_computerPlayer + " chose " + _computerPlayer.MoveChoice.ToString());
         //  Compare choices from player and computer to determine round winner
         if (_player.MoveChoice == _computerPlayer.MoveChoice)
         {
@@ -78,46 +105,43 @@
                 case MoveChoice.Rock:
                     if (_computerPlayer.MoveChoice == MoveChoice.Scissors)
                     {
-                        feedback = "You win!";
+                        winner = _player;
                     }
                     else
                     {
-                        feedback = "You lose!";
+                        winner = _computerPlayer;
                     }
                     break;
                 case MoveChoice.Paper:
                     if (_computerPlayer.MoveChoice == MoveChoice.Rock)
                     {
-                        feedback = "You win!";
+                        winner = _player;
                     }
                     else
                     {
-                        feedback = "You lose!";
+                        winner = _computerPlayer;
                     }
                     break;
                 case MoveChoice.Scissors:
                     if (_computerPlayer.MoveChoice == MoveChoice.Paper)
                     {
-                        feedback = "You win!";
+                        winner = _player;
                     }
                     else
                     {
-                        feedback = "You lose!";
+                        winner = _computerPlayer;
                     }
                     break;
             }
+            //  Distribute points based on winner
+            feedback = winner.ID + " wins!";
+            winner.AddToScore();
         }
-        //  Distribute points based on winner
-        if (feedback == "You win!")
-        {
-            _player.Score++;
-        }
-        else if (feedback == "You lose!")
-        {
-            _computerPlayer.Score++;
-        }
+        _gameRecording.Add(feedback);
         Console.WriteLine(feedback);
-        Console.WriteLine("Current score is " + _player.Score + " - " + _computerPlayer.Score + "\n");
+        currentScore = "Current score is " + _player.Score + " - " + _computerPlayer.Score + "\n";
+        _gameRecording.Add(currentScore);
+        Console.WriteLine(currentScore);
     }
 
     //  CheckGameOver
@@ -126,18 +150,20 @@
     //  Output: none
     public void CheckGameOver()
     {
+        string winnerStatement = "";
         if ((_player.Score >= _pointsToWin) || (_computerPlayer.Score >= _pointsToWin))
         {
             if (_player.Score >= _pointsToWin)
             {
-                Console.WriteLine("You've won the game!");
                 _winner = _player;
             }
             else
             {
-                Console.WriteLine("You've lost the game!");
                 _winner = _computerPlayer;
             }
+            winnerStatement = _winner.ID + " won the game!";
+            _gameRecording.Add(winnerStatement);
+            Console.WriteLine(winnerStatement);
             GameOver = true;
             RecordGame();
         }
@@ -149,18 +175,17 @@
     //  Output: none
     public void RecordGame()
     {
-        //  set array length to match number of rounds played+1 to accommodate for line stating winner
-        _gameRecording = new string[_winner.PastChoices.Count+1];
-        _gameRecording[0] = "Winner is " + _winner.ID;
-        //  populate array with lines of text to place into output file
-        for (int i = 0;  i < _winner.PastChoices.Count; i++)
+        //  set array length to match count of list of recorded lines
+        string[] _recordedStrings = new string[_gameRecording.Count];
+        //  move strings from List into array to feed to file output
+        for (int i = 0; i < _gameRecording.Count; i++)
         {
-            _gameRecording[i+1] = "P:" + _player.PastChoices[i].ToString() + " C:" + _computerPlayer.PastChoices[i].ToString();
+            _recordedStrings[i] = _gameRecording[i].ToString();
         }
         //  set filename
         string fileName = "gameResults_" + DateTime.Now.ToString("ssmmHHddMMyyyy");
         //  write to file
-        File.WriteAllLines("..\\..\\..\\gameResults\\" + fileName + ".txt", _gameRecording);
+        File.WriteAllLines("..\\..\\..\\gameResults\\" + fileName + ".txt", _recordedStrings);
     }
 }
 
