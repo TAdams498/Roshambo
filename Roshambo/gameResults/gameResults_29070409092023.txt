@@ -1,8 +1,0 @@
-Winner is Player
-P:Rock C:Paper
-P:Rock C:Rock
-P:Rock C:Scissors
-P:Rock C:Paper
-P:Rock C:Rock
-P:Rock C:Scissors
-P:Rock C:Scissors

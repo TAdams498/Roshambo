@@ -1,6 +1,0 @@
-Winner is ComputerPlayer
-P:Paper C:Paper
-P:Rock C:Scissors
-P:Paper C:Scissors
-P:Scissors C:Scissors
-P:Scissors C:Rock

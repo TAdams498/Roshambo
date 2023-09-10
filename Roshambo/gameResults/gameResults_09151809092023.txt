@@ -1,0 +1,18 @@
+Game set to best of 3
+Points needed to win: 2
+Player has chosen Rock
+ComputerPlayer has chosen Rock
+It's a tie!
+Current score is 0 - 0
+
+Player has chosen Rock
+ComputerPlayer has chosen Scissors
+Player wins!
+Current score is 1 - 0
+
+Player has chosen Rock
+ComputerPlayer has chosen Scissors
+Player wins!
+Current score is 2 - 0
+
+Player won the game!

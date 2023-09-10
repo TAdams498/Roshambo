@@ -1,2 +1,0 @@
-Winner is ComputerPlayer
-P:Rock C:Paper

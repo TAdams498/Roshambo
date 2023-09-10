@@ -1,0 +1,13 @@
+Game set to best of 3
+Points needed to win: 2
+ComputerPlayer has chosen Paper
+Player has chosen Rock
+ComputerPlayer wins!
+Current score is 0 - 1
+
+ComputerPlayer has chosen Paper
+Player has chosen Rock
+ComputerPlayer wins!
+Current score is 0 - 2
+
+ComputerPlayer won the game!
